@@ -20,29 +20,46 @@ public class NoteService {
     }
 
     // PUBLIC_INTERFACE
+    /**
+     * Create a new note from request data.
+     * @param request note request payload
+     * @return saved Note entity
+     */
     public Note create(NoteRequest request) {
-        /** Create a new note from request data. */
         Note toSave = NoteMapper.toEntity(request);
         return repository.save(toSave);
     }
 
     // PUBLIC_INTERFACE
+    /**
+     * Get a note by its id or throw NotFoundException.
+     * @param id note id
+     * @return the Note entity
+     */
     public Note getById(Long id) {
-        /** Get a note by its id or throw NotFoundException. */
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Note with id " + id + " not found"));
     }
 
     // PUBLIC_INTERFACE
+    /**
+     * List notes for a user ordered by last update desc.
+     * @param userId owner id
+     * @return list of notes
+     */
     public List<Note> listByUser(String userId) {
-        /** List notes for a user ordered by last update desc. */
         return repository.findByUserIdOrderByUpdatedAtDesc(userId);
     }
 
     // PUBLIC_INTERFACE
+    /**
+     * Update an existing note's title/content. Validates the userId matches the note owner.
+     * @param id note id
+     * @param request note update payload
+     * @return updated Note entity
+     */
     @Transactional
     public Note update(Long id, NoteRequest request) {
-        /** Update an existing note's title/content. */
         Note existing = getById(id);
         // security/ownership checks would go here; for now we ensure same user
         if (!existing.getUserId().equals(request.getUserId())) {
@@ -53,8 +70,12 @@ public class NoteService {
     }
 
     // PUBLIC_INTERFACE
+    /**
+     * Delete a note by id if it belongs to the given user.
+     * @param id note id
+     * @param userId owner id
+     */
     public void delete(Long id, String userId) {
-        /** Delete a note by id if it belongs to the given user. */
         Note existing = getById(id);
         if (!existing.getUserId().equals(userId)) {
             throw new NotFoundException("Note not found for the given user");
