@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import io.swagger.v3.oas.models.ExternalDocumentation;
-import io.swagger.v3.oas.models.info.*;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -29,18 +27,33 @@ import java.util.List;
 )
 public class OpenApiConfig {
 
+    // PUBLIC_INTERFACE
+    /**
+     * Provides additional OpenAPI customization for Swagger UI and API metadata.
+     * - Sets external documentation pointer
+     * - Registers a default server
+     * - Adjusts Info metadata such as description and terms of service
+     */
     @Bean
     public GlobalOpenApiCustomizer globalOpenApiCustomizer() {
-        // Additional customization hooks if needed
         return openApi -> {
             openApi.setExternalDocs(new io.swagger.v3.oas.models.ExternalDocumentation()
                     .description("API Guide")
                     .url("https://example.com/docs"));
             openApi.setServers(List.of(new Server().url("/").description("Default Server")));
-            Info info = openApi.getInfo();
-            if (info != null) {
-                info.setSummary("Ocean Professional - Notes Service");
-                info.setTermsOfService("https://example.com/terms");
+
+            // Use the model Info type (io.swagger.v3.oas.models.info.Info)
+            io.swagger.v3.oas.models.info.Info modelInfo = openApi.getInfo();
+            if (modelInfo != null) {
+                // setSummary does not exist on model Info; adjust description to reflect theme/summary.
+                String existingDescription = modelInfo.getDescription();
+                String prefix = "Ocean Professional - Notes Service";
+                if (existingDescription == null || existingDescription.isBlank()) {
+                    modelInfo.setDescription(prefix);
+                } else if (!existingDescription.startsWith(prefix)) {
+                    modelInfo.setDescription(prefix + " — " + existingDescription);
+                }
+                modelInfo.setTermsOfService("https://example.com/terms");
             }
         };
     }
