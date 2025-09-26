@@ -1,0 +1,65 @@
+:root {
+  --primary: #2563EB;
+  --secondary: #F59E0B;
+  --accent: #F59E0B;
+  --error: #EF4444;
+  --background: #f9fafb;
+  --surface: #ffffff;
+  --text: #111827;
+}
+
+body.swagger-ui {
+  background: var(--background);
+  color: var(--text);
+}
+
+/* Header */
+.topbar {
+  background: linear-gradient(90deg, rgba(37,99,235,0.1), #f9fafb);
+  border-bottom: 1px solid rgba(17,24,39,0.08);
+}
+.topbar a, .topbar .download-url-wrapper .select-label {
+  color: var(--text);
+}
+.topbar .download-url-wrapper .select-label select {
+  border-color: rgba(17,24,39,0.2);
+}
+
+/* Buttons */
+.swagger-ui .btn {
+  border-radius: 8px;
+  transition: all .2s ease-in-out;
+  box-shadow: 0 1px 2px rgba(17,24,39,0.06);
+}
+.swagger-ui .btn.execute {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+.swagger-ui .btn.authorize, .swagger-ui .btn.try-out {
+  color: var(--surface);
+  background: var(--secondary);
+  border-color: var(--secondary);
+}
+
+/* Sidebar and sections */
+.swagger-ui .scheme-container, .swagger-ui .opblock {
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(17,24,39,0.08);
+  border: 1px solid rgba(17,24,39,0.08);
+}
+
+/* HTTP methods colors accent */
+.swagger-ui .opblock.opblock-post { border-color: var(--primary); }
+.swagger-ui .opblock.opblock-get { border-color: #10B981; }
+.swagger-ui .opblock.opblock-put { border-color: var(--secondary); }
+.swagger-ui .opblock.opblock-delete { border-color: var(--error); }
+
+/* Links and text */
+.swagger-ui a { color: var(--primary); }
+
+/* Inputs */
+.swagger-ui input, .swagger-ui textarea, .swagger-ui select {
+  border-radius: 8px !important;
+  border-color: rgba(17,24,39,0.15) !important;
+}
